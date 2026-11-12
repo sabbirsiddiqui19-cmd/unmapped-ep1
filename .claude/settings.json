@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 .claude/skills/topic-research/scripts/*)",
+      "Bash(python3 .claude/skills/upload-kit/check_kit.py *)",
+      "Bash(mkdir -p episodes/*)",
+      "Bash(cp .claude/skills/topic-research/templates/* episodes/*)",
+      "Edit(/episodes/**)",
+      "WebSearch",
+      "WebFetch",
+      "mcp__claude-in-chrome__*"
+    ],
+    "deny": [
+      "Read(./.env)"
+    ]
+  }
+}
