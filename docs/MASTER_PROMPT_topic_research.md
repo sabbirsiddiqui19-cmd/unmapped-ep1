@@ -23,7 +23,8 @@ Pick the next episode topic from real audience demand, then research it to a sta
 - Only free tools are allowed. The owner has no paid tools.
 - YouTube Data API v3 with a free key. `search.list` has its own bucket of 100 calls per day; other methods share 10,000 units per day.
 - YouTube Studio's own free tools, read through Chrome: the Analytics → Trends tab (audience interest, top searches, content gaps; screenshots) and Advanced mode CSV exports.
-- Google Trends with the YouTube Search property. There is no free official API, so the CSVs are downloaded through Chrome, with one anchor term repeated in every batch.
+- Google Trends with the YouTube Search property. There is no free official API, so the CSVs are downloaded through Chrome, with one anchor term repeated in every batch. When Chrome is not available (phone or cloud sessions), fetch the same data through SerpApi's free plan (`SERPAPI_KEY`) into the same CSV layout.
+- Phone route for YouTube Studio, which has no free API for the Trends tab: the owner attaches screenshots of the Trends tab (and, for Part C, of an episode's geography, traffic source and search terms) to the `/topic-research` message, and the skill reads them exactly as shown.
 - Wikimedia pageviews API.
 - Library of Congress loc.gov API, including Chronicling America.
 - Internet Archive.

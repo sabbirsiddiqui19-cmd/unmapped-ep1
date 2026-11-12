@@ -18,12 +18,12 @@ If the owner gives a theme (`$ARGUMENTS`), keep the candidates inside that theme
 
 - Do not ask the owner anything during Part A. Make each decision with the rules below and write it in `run_log.md`.
 - The only pause is when Chrome shows a login page or a CAPTCHA. Claude Code stops there on its own; the owner handles it and the run continues.
-- If a tool is unavailable (no `YT_API_KEY`, Chrome not connected, quota used up, a page that will not load after one retry), carry on without that signal. Mark it `NOT COLLECTED` in the scores and in the report. Never fill the gap with an estimate.
+- Each signal has a desktop route and a phone route (see "Which route to use" below). Try the routes in order. Only when every route for a signal fails (no key, quota used up, a page that will not load after one retry), carry on without it and mark it `NOT COLLECTED` in the scores and in the report, with the reason. Never fill the gap with an estimate.
 - Work at a human pace in the browser: one page at a time, a few seconds between searches, no bulk scraping.
 
 Hard rules:
 
-- Only free tools. No paid tools, no trial credits.
+- Only free tools. No paid tools, no trial credits. A free plan that needs only a sign-up (SerpApi's 250 searches a month) is allowed; never upgrade it.
 - No fact comes from memory, from an AI answer, or from a source that was not opened in this session. If something cannot be found, it is written down as unknown.
 - Every number has a country or "global" label, a source, and a date.
 - `PUBLISH = NO`. Nothing is posted anywhere, and no YouTube setting is changed; in Studio, only read.
@@ -41,7 +41,20 @@ Demand evidence from US and GB carries the most weight. Global figures are used 
 
 ## Part A: choose the topic
 
-Work in `episodes/_candidates/<YYYY-MM-DD>/`. Start `run_log.md` there with the date, the theme if one was given, and which tools are available (YT_API_KEY set or not, Chrome tools present or not, search calls left today if known).
+Work in `episodes/_candidates/<YYYY-MM-DD>/`. Start `run_log.md` there with the date, the theme if one was given, and which tools are available (YT_API_KEY set or not, SERPAPI_KEY set or not, Chrome tools present or not, screenshots attached or not, search calls left today if known).
+
+### Which route to use
+
+The owner often starts runs from the Claude phone app, where Claude Code runs in a cloud session without Chrome. Check `run_log.md`'s tool list and pick the first route that is available for each signal:
+
+| Signal | 1. Desktop route | 2. Phone route |
+|---|---|---|
+| Studio Trends tab | Chrome tools (A3) | Screenshots the owner attached to the `/topic-research` message (A3) |
+| Google Trends | Chrome download (A3) | `trends_serpapi.py` with `SERPAPI_KEY` (A3) |
+| Part C channel analytics | Chrome Advanced mode export | Screenshots the owner attached (Part C) |
+| Reddit | Chrome, read-only | Web search and fetch |
+
+Screenshots attached to the message are visible in the conversation and are also saved as files with the message; copy each one into the run folder before using it.
 
 ### What each free signal can and cannot show
 
@@ -101,11 +114,20 @@ The script needs `YT_API_KEY` in the environment or in `.env`.
 - **Breakouts:** videos with at least 3× their channel's median views, from channels under 100k subscribers. They show demand that a small channel can win. Only the channels that rank most often get a median, so this can be undercounted.
 - **`yt/requests.md`:** comments asking for related topics.
 
-### A3. Studio Trends and Google Trends through Chrome
+### A3. Studio Trends and Google Trends
 
-Use the Claude in Chrome tools (`mcp__claude-in-chrome__*`). They work in the owner's own Chrome, which is already signed in to YouTube and Google. If those tools are not available in this session, skip A3 and mark both signals `NOT COLLECTED`.
+The desktop route uses the Claude in Chrome tools (`mcp__claude-in-chrome__*`), which work in the owner's own Chrome, already signed in to YouTube and Google. Without them, use the phone routes below.
 
 **YouTube Studio Trends tab** → `studio_trends/`
+
+Phone route (no Chrome tools):
+
+1. Look for screenshots the owner attached to the `/topic-research` message. Copy them to `studio_trends/owner_<n>.png`.
+2. Read each one and write `studio_trends/summary.md`: the top searches, the content gaps, and any "Audience interest" levels shown, exactly as they appear. Anything not visible is written as "not shown". Never guess text that is cut off or blurred.
+3. Use the top searches and content gaps as candidate ideas in A1. Per-candidate "Audience interest" is only known for phrases the owner searched in the screenshots; for the rest write `NOT COLLECTED (phone route)`.
+4. If nothing is attached, mark the Studio signal `NOT COLLECTED (no screenshots)` and say in the A8 report which screenshots to attach next time.
+
+Desktop route (Chrome tools present):
 
 1. Open `https://studio.youtube.com`, go to Analytics, and open the Trends tab. The Studio layout is being updated during 2026, so find the tab by reading the page rather than relying on a fixed position.
 2. For each candidate's main phrase, use the tab's search box. Read the page text and record:
@@ -118,8 +140,21 @@ Use the Claude in Chrome tools (`mcp__claude-in-chrome__*`). They work in the ow
 
 **Google Trends** → `trends/`
 
-1. Choose one **anchor term** for every batch, preferably a previous episode's subject (for example `poyais`), and write it in `run_log.md`.
-2. Put the anchor plus up to 4 candidates in each batch, and open:
+Choose one **anchor term** for every batch, preferably a previous episode's subject (for example `poyais`), and write it in `run_log.md`. Each batch holds the anchor plus up to 4 candidates.
+
+Phone route (no Chrome tools, `SERPAPI_KEY` set): SerpApi's free plan fetches the same Google Trends data, YouTube Search property included. It allows 250 searches a month and 50 an hour; one call below is one search. A normal run uses about 10 (3 batches × US and GB, plus up to 3 region calls for finalists in A6).
+
+```
+python3 .claude/skills/topic-research/scripts/trends_serpapi.py timeline \
+  --terms "<term2>,<term3>,<term4>,<term5>" --anchor "<anchor>" --geo US --out trends/US_youtube_5y_a.csv
+```
+
+Repeat with `--geo GB`, then the next batches as `_b`, `_c`. For a finalist's country ranking use `trends_serpapi.py region --term "<term>" --out trends/region_<term>.csv`. If the script prints `NOT COLLECTED`, record its reason for that batch and carry on. Then run `trends_csv.py` as in step 6 below; it reads these files the same way as manual downloads.
+
+Desktop route (Chrome tools present):
+
+1. Use the anchor term chosen above.
+2. Open, for each batch:
 
    `https://trends.google.com/trends/explore?date=today%205-y&geo=US&gprop=youtube&hl=en-US&q=<anchor>,<term2>,<term3>,<term4>,<term5>`
 
@@ -220,7 +255,8 @@ End Part A with a short message in Bengali, in this shape:
 > কেন: <2–3 lines with the strongest figures, each with its country and source file>
 > ঝুঁকি: <one line>
 > দ্বিতীয় পছন্দ: <runner-up> (<total>)
-> যা সংগ্রহ করা যায়নি: <signals marked NOT COLLECTED, or "সব সংগ্রহ হয়েছে">
+> যা সংগ্রহ করা যায়নি: <signals marked NOT COLLECTED with the reason, or "সব সংগ্রহ হয়েছে">
+> পরের বার যা লাগবে: <only if something was missing: the key or screenshots that would fill it, in plain Bengali>
 
 Keep everything else in the files (`TOPIC_SCORES.md`, `finalists/`, `run_log.md`).
 
@@ -326,7 +362,11 @@ Keep the file names and columns stable. If a column has to change, update `uploa
 
 ## Part C: learn from published episodes
 
-Part A runs this first, on its own, for every published episode that is at least 28 days old and has no `episodes/EPn/feedback/` folder yet. It needs the Chrome tools; without them, note it in `run_log.md` and continue.
+Part A runs this first, on its own, for every published episode that is at least 28 days old and has no `episodes/EPn/feedback/` folder yet.
+
+Phone route (no Chrome tools): use screenshots the owner attached of that episode's Studio Analytics (geography, traffic source, YouTube search terms). Copy them to `feedback/`, read the figures exactly as shown, and write `feedback/summary.md` as in step 2. If none are attached, note it in `run_log.md`, continue, and list in the A8 report which episode and which three screens to attach next time.
+
+Desktop route:
 
 1. In Chrome, open YouTube Studio → Analytics → Advanced mode for that episode. Export each view with "Export current view" (CSV, at most 500 rows) and move the file with `collect_download.py`:
    - Geography breakdown → `feedback/geography.csv`

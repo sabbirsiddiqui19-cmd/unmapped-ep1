@@ -18,10 +18,20 @@
 
 1. **Environment বানানো:** ফোনের ব্রাউজারে claude.ai/code খুলুন। মেসেজ বক্সের নিচের environment selector থেকে **New environment** বেছে নিন।
    - **Network access:** **Full** দিন। গবেষণার জন্য Wikipedia, Library of Congress, Internet Archive আর নানা জার্নালের সাইটে ঢুকতে হয়, যেগুলো ডিফল্ট তালিকায় নেই।
-   - **Environment variables:** লিখুন `YT_API_KEY=আপনার-key`।
+   - **Environment variables:** দুই লাইনে লিখুন `YT_API_KEY=আপনার-key` আর `SERPAPI_KEY=আপনার-key`।
 2. **Session শুরু:** Claude অ্যাপের Code অংশে নতুন session খুলে repo `unmapped-ep1` আর ওই environment বেছে নিন। Claude-এর কোনো Project-এর ভেতরে session খুলবেন না, কারণ Project-এর ভেতরের session repo-র skill লোড করে না।
-3. **চালানো:** `/topic-research` লিখুন।
-4. **সীমা:** ফোনে Chrome-এর সংযোগ নেই। তাই Studio Trends, Google Trends আর Studio থেকে আগের এপিসোডের ফিডব্যাক সংগ্রহ হবে না, রিপোর্টে "যা সংগ্রহ করা যায়নি" অংশে সেটা লেখা থাকবে। YouTube API, কমেন্ট, Reddit আর Wikipedia থেকে ডেটা ঠিকই আসবে।
+3. **চালানো:** `/topic-research` লিখুন, আর একই মেসেজে Studio-র স্ক্রিনশট জুড়ে দিন (নিচে দেখুন)।
+
+ফোনে Chrome-এর সংযোগ নেই, তাই দুটো জিনিস অন্য পথে আসে:
+
+- **Google Trends:** SerpApi-র ফ্রি অ্যাকাউন্ট দিয়ে আসে, মাসে ২৫০টা সার্চ পর্যন্ত। প্রতিবার রিসার্চে লাগে ১০টার মতো। Key বানাতে serpapi.com-এ ফ্রি অ্যাকাউন্ট খুলুন, তারপর Dashboard থেকে "Private API Key" কপি করুন।
+- **YouTube Studio:** এর কোনো ফ্রি API নেই, তাই আপনি স্ক্রিনশট দেবেন।
+  1. ফোনের Chrome-এ studio.youtube.com খুলুন, তারপর ⋮ মেনু থেকে **Desktop site** চালু করুন।
+  2. Analytics → **Trends** ট্যাবের ১–২টা স্ক্রিনশট নিন, যাতে top searches আর content gaps দেখা যায়।
+  3. কোনো এপিসোড পাবলিশের ২৮ দিন পার হলে সেটার Analytics থেকে তিনটা স্ক্রিনশটও নিন: Geography, Traffic source, আর YouTube search terms।
+  4. সব স্ক্রিনশট `/topic-research` মেসেজের সাথে জুড়ে দিন।
+
+কিছু বাদ পড়লে রিপোর্টের "পরের বার যা লাগবে" অংশে লেখা থাকবে কোনটা দিতে হবে।
 
 ## কম্পিউটার থেকে চালানো: একবারের সেটআপ
 

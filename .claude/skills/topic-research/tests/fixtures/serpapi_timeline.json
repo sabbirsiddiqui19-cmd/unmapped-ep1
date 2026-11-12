@@ -1,0 +1,4 @@
+{"search_parameters":{"engine":"google_trends","q":"phantom islands,poyais,lost city","api_key":"SECRET"},
+ "interest_over_time":{"timeline_data":[
+ {"date":"Nov 1 - 7, 2025","timestamp":"1761955200","values":[{"query":"phantom islands","value":"12","extracted_value":12},{"query":"poyais","value":"<1","extracted_value":0},{"query":"lost city","value":"60","extracted_value":60}]},
+ {"date":"Nov 8 - 14, 2026","timestamp":"1794614400","values":[{"query":"phantom islands","value":"20","extracted_value":20},{"query":"poyais","value":"3","extracted_value":3},{"query":"lost city","value":"55","extracted_value":55}]}]}}

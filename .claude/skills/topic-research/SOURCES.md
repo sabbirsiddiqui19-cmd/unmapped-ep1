@@ -36,6 +36,13 @@ Checked: 2026-11-12. Re-check the pages marked "limit" before relying on a numbe
 - **Citation:** reused data must be credited "Data source: Google Trends (https://www.google.com/trends)".
 - **Sources:** https://support.google.com/trends/answer/4365533, https://support.google.com/trends/answer/4359550, https://support.google.com/trends/answer/4365538, https://www.seroundtable.com/google-trends-api-applications-approvals-39978.html
 
+### SerpApi Google Trends (phone and cloud route)
+
+- **Plan:** the free plan gives 250 searches a month with a throughput of 50 an hour; only successful searches count (limit, https://serpapi.com/pricing.md, checked 2026-11-12). Sign-up gives a "Private API Key", stored as `SERPAPI_KEY`.
+- **Engine:** `google_trends`. `gprop=youtube` selects YouTube Search; `data_type` is `TIMESERIES` (interest over time), `GEO_MAP_0` (one term by country), `GEO_MAP`, `RELATED_TOPICS` or `RELATED_QUERIES`. `geo` and `date` take the same values as the Trends page.
+- **Data:** the same 0-100 Google Trends index as a manual download, so the same reading rules and the Google Trends credit apply.
+- **Sources:** https://serpapi.com/google-trends-interest-over-time and the SerpApi parameter list mirrored at https://www.withone.ai/knowledge/serp-api/conn_mod_def%3A%3AGJ6ZzWMc0-U%3A%3AwzfBgYnITI670BwLMS1PXA/md (SerpApi's own parameter page could not be opened on the check date; confirm `gprop=youtube` on the first real run by checking `search_parameters` in the saved JSON).
+
 ### Wikimedia pageviews
 
 - **Per-article endpoint:** `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/{Title}/monthly/{YYYYMMDD}/{YYYYMMDD}`.
